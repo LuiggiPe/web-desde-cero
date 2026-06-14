@@ -3,18 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Reproductor Live Móvil Fix</title>
+    <title>Reproductor Live</title>
     <style>
         body {
             background-color: #0f172a;
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column; /* Alinea el botón arriba y el reproductor abajo */
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             overflow: hidden;
+        }
+
+        /* 🌟 ESTILO DEL BOTÓN PARA IR A LA SEGUNDA PÁGINA */
+        .nav-button {
+            background-color: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none; /* Quita la línea de enlace */
+            margin-bottom: 20px;   /* Separa el botón del reproductor */
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: #0ea5e9;
+            transform: scale(1.05);
         }
 
         .player-container {
@@ -30,7 +52,6 @@
             height: 100%;
         }
 
-        /* Ajuste para telas pequenas */
         @media (max-width: 768px) {
             .player-container {
                 width: 100%;
@@ -40,6 +61,8 @@
     </style>
 </head>
 <body>
+
+    <a href="juegos.html" class="nav-button">Ir a la Segunda Página 🎮</a>
 
     <div class="player-container">
         <div id="player"></div>
@@ -53,17 +76,13 @@
             parentId: "#player",
             width: "100%",
             height: "100%",
-            
-            // 🚀 AJUSTES CRUCIALES PARA MÓVILES:
-            autoPlay: false,                // Deixamos em false para que o utilizador clique no "Play" (móveis exigem toque humano)
+            autoPlay: false,                
             preload: "auto",
             mimeType: "application/x-mpegURL",
-            
-            // Configurações internas do Clappr para compatibilidade móvel
             playback: {
-                playInline: true,          // Impede que o iOS abra o vídeo no player nativo do iPhone em tela cheia automática
+                playInline: true,          
                 hlsjsConfig: {
-                    enableWorker: true,    // Melhora o desempenho do streaming no Android
+                    enableWorker: true,    
                     lowLatencyMode: true
                 }
             },

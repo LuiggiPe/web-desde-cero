@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Reproductor Live</title>
+    <title>Mi Reproductor Web</title>
     <style>
+        /* 🎨 ESTILOS GENERALES (Fondo oscuro y centrado) */
         body {
             background-color: #0f172a;
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column; /* Alinea el botón arriba y el reproductor abajo */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow: hidden;
         }
 
-        /* 🌟 ESTILO DEL BOTÓN PARA IR A LA SEGUNDA PÁGINA */
+        /* 🎮 BOTÓN PARA IR A JUEGOS.HTML */
         .nav-button {
             background-color: #38bdf8;
             color: #0f172a;
@@ -28,10 +29,11 @@
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            text-decoration: none; /* Quita la línea de enlace */
-            margin-bottom: 20px;   /* Separa el botón del reproductor */
+            text-decoration: none;
+            margin-bottom: 25px;
             box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
             transition: transform 0.2s, background-color 0.2s;
+            z-index: 10;
         }
 
         .nav-button:hover {
@@ -39,12 +41,16 @@
             transform: scale(1.05);
         }
 
+        /* 📺 CONTENEDOR DEL REPRODUCTOR */
         .player-container {
-            width: 100%;
+            width: 95%;
             max-width: 854px;
             aspect-ratio: 16 / 9;
             background-color: #000000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
         }
 
         #player {
@@ -52,9 +58,35 @@
             height: 100%;
         }
 
+        /* 📱 AJUSTES RESPONSIVOS PARA MÓVILES */
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                box-sizing: border-box;
+            }
+            .nav-button {
+                width: 80%;
+                text-align: center;
+                padding: 14px 0;
+            }
             .player-container {
                 width: 100%;
+                border-radius: 8px;
+            }
+        }
+
+        /* 🔄 MODO HORIZONTAL EN MÓVILES (Simula pantalla completa) */
+        @media (max-width: 900px) and (orientation: landscape) {
+            body {
+                padding: 0;
+            }
+            .nav-button {
+                display: none; /* Esconde el botón al girar el celular para dar prioridad al video */
+            }
+            .player-container {
+                width: 100vw;
+                height: 100vh;
+                max-width: none;
                 border-radius: 0;
             }
         }
@@ -62,7 +94,7 @@
 </head>
 <body>
 
-    <a href="juegos.html" class="nav-button">Ir a la Segunda Página 🎮</a>
+    <a href="juegos.html" class="nav-button">Ir a la Página de Juegos 🎮</a>
 
     <div class="player-container">
         <div id="player"></div>
@@ -72,23 +104,37 @@
 
     <script>
         var player = new Clappr.Player({
-            source: "https://am91cm5leQ.fubo18.com:443/sportv/mono.m3u8?token=5080ec63b62e48771ae464b27c4728ee5f4d95a8-73-1781415459-1781397459", 
+            // El enlace directo .m3u8 que compartiste
+            source: "https://am91cm5leq.fubo18.com/sportv/mono.m3u8?token=5080ec63b62e48771ae464b27c4728ee5f4d95a8-73-1781415459-1781397459", 
             parentId: "#player",
             width: "100%",
             height: "100%",
-            autoPlay: false,                
+            autoPlay: false, // En falso para que no choque con los bloqueos de sonido de los celulares
             preload: "auto",
             mimeType: "application/x-mpegURL",
+            mediacontrol: { seekbar: "#38bdf8", buttons: "#ffffff" },
+            hideMediaControl: false, // Evita que los controles se oculten solos al inicio
+            
             playback: {
-                playInline: true,          
+                playInline: true, // Clave para que en iOS (iPhone) no se abra el reproductor del sistema
                 hlsjsConfig: {
-                    enableWorker: true,    
+                    enableWorker: true,
                     lowLatencyMode: true
                 }
             },
-            disableVideoTagContextMenu: true
+            disableVideoTagContextMenu: true // Protege el elemento de video en móviles
+        });
+
+        // Asegura que los controles (incluido el botón grande de Play) se muestren al cargar la web
+        player.on(Clappr.Events.PLAYER_READY, function() {
+            player.getPlugin('click_to_pause').disable(); 
+            setTimeout(function(){
+                player.mediaControl.show(); 
+            }, 800);
         });
     </script>
 
 </body>
 </html>
+</html>
+

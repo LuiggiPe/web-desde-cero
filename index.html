@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Reproductor Clappr</title>
+    <title>Reproductor SporTV</title>
     <style>
-        /* Estilos básicos para centrar el reproductor como en tu ejemplo */
         body {
             background-color: #0f172a;
             margin: 0;
@@ -18,7 +17,7 @@
         }
         #player {
             width: 100%;
-            max-width: 854px; /* Tamaño ideal para reproductor 16:9 (480p/720p) */
+            max-width: 854px;
             aspect-ratio: 16 / 9;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border-radius: 8px;
@@ -28,26 +27,26 @@
 </head>
 <body>
 
-    <!-- Aquí se inyectará el reproductor de forma idéntica a tu imagen -->
     <div id="player"></div>
 
-    <!-- Cargamos la librería principal de Clappr desde su CDN oficial -->
+    <!-- Cargamos Clappr y su plugin para HLS (reproducción de .m3u8) -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 
     <script>
-        // Configuración e inicialización de Clappr
         var player = new Clappr.Player({
-            // El enlace original del stream que pusiste en tu primera consulta
-            source: "https://la18hd.com/ebf46878-30b7-464a-900e-2751a9aaaccb", 
+            // Pegamos tu nuevo enlace .m3u8 completo aquí adentro
+            source: "https://am91cm5leQ.fubo18.com:443/sportv/mono.m3u8?token=5080ec63b62e48771ae464b27c4728ee5f4d95a8-73-1781415459-1781397459", 
             parentId: "#player",
             width: "100%",
             height: "100%",
-            autoPlay: false, // Cambiar a true si quieres que inicie solo
-            preload: "metadata",
-            mediacontrol: { seekbar: "#38bdf8", buttons: "#ffffff" }, // Colores de los controles
-            mimeType: "application/x-mpegURL" // Le indica a Clappr que es una señal HLS (.m3u8)
+            autoPlay: true, // Intenta reproducir automáticamente
+            preload: "auto",
+            mimeType: "application/x-mpegURL" // Obliga a Clappr a leerlo como HLS
         });
     </script>
+
+</body>
+</html>
 
 </body>
 </html>

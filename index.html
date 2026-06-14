@@ -1,14 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Aprende Quechua</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Reproductor Clappr</title>
+    <style>
+        /* Estilos básicos para centrar el reproductor como en tu ejemplo */
+        body {
+            background-color: #0f172a;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+        #player {
+            width: 100%;
+            max-width: 854px; /* Tamaño ideal para reproductor 16:9 (480p/720p) */
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Bienvenido a Aprende Quechua 🇵🇪</h1>
-    <p>Muy pronto aprenderás palabras en quechua</p>
+    <!-- Aquí se inyectará el reproductor de forma idéntica a tu imagen -->
+    <div id="player"></div>
+
+    <!-- Cargamos la librería principal de Clappr desde su CDN oficial -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+
+    <script>
+        // Configuración e inicialización de Clappr
+        var player = new Clappr.Player({
+            // El enlace original del stream que pusiste en tu primera consulta
+            source: "https://la18hd.com/ebf46878-30b7-464a-900e-2751a9aaaccb", 
+            parentId: "#player",
+            width: "100%",
+            height: "100%",
+            autoPlay: false, // Cambiar a true si quieres que inicie solo
+            preload: "metadata",
+            mediacontrol: { seekbar: "#38bdf8", buttons: "#ffffff" }, // Colores de los controles
+            mimeType: "application/x-mpegURL" // Le indica a Clappr que es una señal HLS (.m3u8)
+        });
+    </script>
 
 </body>
 </html>

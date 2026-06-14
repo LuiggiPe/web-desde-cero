@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mi Reproductor Web</title>
     <style>
-        /* 🎨 ESTILOS GENERALES (Fondo oscuro y centrado) */
         body {
             background-color: #0f172a;
             margin: 0;
@@ -19,7 +18,7 @@
             overflow: hidden;
         }
 
-        /* 🎮 BOTÓN PARA IR A JUEGOS.HTML */
+        /* Botón de navegación mejorado */
         .nav-button {
             background-color: #38bdf8;
             color: #0f172a;
@@ -33,7 +32,7 @@
             margin-bottom: 25px;
             box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
             transition: transform 0.2s, background-color 0.2s;
-            z-index: 10;
+            display: inline-block;
         }
 
         .nav-button:hover {
@@ -41,7 +40,7 @@
             transform: scale(1.05);
         }
 
-        /* 📺 CONTENEDOR DEL REPRODUCTOR */
+        /* Contenedor del reproductor con tamaño fijo para que Clappr no se rompa */
         .player-container {
             width: 95%;
             max-width: 854px;
@@ -50,7 +49,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
             border-radius: 12px;
             overflow: hidden;
-            position: relative;
         }
 
         #player {
@@ -58,7 +56,6 @@
             height: 100%;
         }
 
-        /* 📱 AJUSTES RESPONSIVOS PARA MÓVILES */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -75,13 +72,12 @@
             }
         }
 
-        /* 🔄 MODO HORIZONTAL EN MÓVILES (Simula pantalla completa) */
         @media (max-width: 900px) and (orientation: landscape) {
             body {
                 padding: 0;
             }
             .nav-button {
-                display: none; /* Esconde el botón al girar el celular para dar prioridad al video */
+                display: none; /* Oculta el botón en horizontal para ver el video completo */
             }
             .player-container {
                 width: 100vw;
@@ -103,38 +99,37 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@0.3.5/dist/clappr.min.js"></script>
 
     <script>
-        var player = new Clappr.Player({
-            // El enlace directo .m3u8 que compartiste
-            source: "https://am91cm5leq.fubo18.com/sportv/mono.m3u8?token=5080ec63b62e48771ae464b27c4728ee5f4d95a8-73-1781415459-1781397459", 
-            parentId: "#player",
-            width: "100%",
-            height: "100%",
-            autoPlay: false, // En falso para que no choque con los bloqueos de sonido de los celulares
-            preload: "auto",
-            mimeType: "application/x-mpegURL",
-            mediacontrol: { seekbar: "#38bdf8", buttons: "#ffffff" },
-            hideMediaControl: false, // Evita que los controles se oculten solos al inicio
-            
-            playback: {
-                playInline: true, // Clave para que en iOS (iPhone) no se abra el reproductor del sistema
-                hlsjsConfig: {
-                    enableWorker: true,
-                    lowLatencyMode: true
-                }
-            },
-            disableVideoTagContextMenu: true // Protege el elemento de video en móviles
-        });
+        // 🚀 TRUCO DE SEGURIDAD: Espera a que TODO el HTML esté cargado antes de meter el reproductor
+        window.addEventListener('DOMContentLoaded', function() {
+            var player = new Clappr.Player({
+                source: "https://am91cm5leq.fubo18.com/sportv/mono.m3u8?token=5080ec63b62e48771ae464b27c4728ee5f4d95a8-73-1781415459-1781397459", 
+                parentId: "#player",
+                width: "100%",
+                height: "100%",
+                autoPlay: false, 
+                preload: "auto",
+                mimeType: "application/x-mpegURL",
+                mediacontrol: { seekbar: "#38bdf8", buttons: "#ffffff" },
+                hideMediaControl: false,
+                playback: {
+                    playInline: true,
+                    hlsjsConfig: {
+                        enableWorker: true,
+                        lowLatencyMode: true
+                    }
+                },
+                disableVideoTagContextMenu: true
+            });
 
-        // Asegura que los controles (incluido el botón grande de Play) se muestren al cargar la web
-        player.on(Clappr.Events.PLAYER_READY, function() {
-            player.getPlugin('click_to_pause').disable(); 
-            setTimeout(function(){
-                player.mediaControl.show(); 
-            }, 800);
+            // Fuerza a Clappr a pintar los controles de Play cuando esté listo
+            player.on(Clappr.Events.PLAYER_READY, function() {
+                setTimeout(function(){
+                    player.mediaControl.show(); 
+                }, 500);
+            });
         });
     </script>
 
 </body>
-</html>
 </html>
 
